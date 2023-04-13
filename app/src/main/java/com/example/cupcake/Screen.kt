@@ -9,3 +9,5 @@ enum class Screen(@StringRes val title: Int) {
     Pickup(title = R.string.choose_pickup_date),
     Summary(title = R.string.order_summary)
 }
+
+

@@ -86,7 +86,7 @@ fun CupcakeApp(modifier: Modifier = Modifier, viewModel: OrderViewModel = viewMo
     val backStackEntry by navController.currentBackStackEntryAsState()
     // TODO: Get the name of the current screen
     val currentScreen = Screen.valueOf(
-        backStackEntry?.destination?.route ?: Screen.Start.name
+        backStackEntry?.destination?.route?.split("/")?.get(0) ?: Screen.Start.name
     )
 
     Scaffold(
