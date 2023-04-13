@@ -15,6 +15,7 @@
  */
 package com.example.cupcake
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -31,9 +32,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.cupcake.data.DataSource.flavors
 import com.example.cupcake.data.DataSource.quantityOptions
 import com.example.cupcake.ui.OrderSummaryScreen
@@ -105,7 +108,9 @@ fun CupcakeApp(modifier: Modifier = Modifier, viewModel: OrderViewModel = viewMo
                 val context = LocalContext.current
                 SelectOptionScreen(
                     subtotal = uiState.price,
-                    onNextButtonClicked = { navController.navigate(Screen.Pickup.name) },
+                    onNextButtonClicked = {
+                        navController.navigate(Screen.Pickup.name + "/${uiState.flavor}")
+                    },
                     onCancelButtonClicked = {
                         cancelOrderAndNavigateToStart(viewModel, navController)
                     },
@@ -113,10 +118,20 @@ fun CupcakeApp(modifier: Modifier = Modifier, viewModel: OrderViewModel = viewMo
                     onSelectionChanged = { viewModel.setFlavor(it) }
                 )
             }
-            composable(route = Screen.Pickup.name) {
+            composable(
+                route = Screen.Pickup.name + "/{flavorID}",
+                arguments = listOf(navArgument("flavorID") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val flavorID = backStackEntry.arguments?.getString("flavorID")
+                Log.d("CupcakeApp", "flavorID: $flavorID")
+
                 SelectOptionScreen(
                     subtotal = uiState.price,
-                    onNextButtonClicked = { navController.navigate(Screen.Summary.name) },
+                    onNextButtonClicked = {
+                        navController.navigate(Screen.Summary.name) {
+                            // popUpTo(Screen.Pickup.name) { inclusive = true }
+                        }
+                    },
                     onCancelButtonClicked = {
                         cancelOrderAndNavigateToStart(viewModel, navController)
                     },
