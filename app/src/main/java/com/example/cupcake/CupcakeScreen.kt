@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.cupcake.data.DataSource.flavors
@@ -55,12 +56,13 @@ import com.example.cupcake.ui.StartOrderScreen
 
 @Composable
 fun CupcakeAppBar(
+    currentScreen: Screen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text(stringResource(id = R.string.app_name)) },
+        title = { Text(stringResource(currentScreen.title)) },
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack) {
@@ -81,14 +83,21 @@ fun CupcakeApp(modifier: Modifier = Modifier, viewModel: OrderViewModel = viewMo
     val navController = rememberNavController()
 
     // TODO: Get current back stack entry
-
+    val backStackEntry by navController.currentBackStackEntryAsState()
     // TODO: Get the name of the current screen
+    val currentScreen = Screen.valueOf(
+        backStackEntry?.destination?.route ?: Screen.Start.name
+    )
 
     Scaffold(
         topBar = {
             CupcakeAppBar(
-                canNavigateBack = false,
-                navigateUp = { /* TODO: implement back navigation */ }
+                currentScreen = currentScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = {
+                    // TODO: implement back navigation
+                    navController.navigateUp()
+                }
             )
         }
     ) { innerPadding ->
