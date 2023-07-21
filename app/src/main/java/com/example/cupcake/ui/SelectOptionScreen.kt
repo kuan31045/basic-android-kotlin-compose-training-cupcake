@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cupcake.R
+import com.example.cupcake.Screen
 import com.example.cupcake.ui.components.FormattedPriceLabel
 
 /**
@@ -57,7 +58,6 @@ fun SelectOptionScreen(
     modifier: Modifier = Modifier
 ) {
     var selectedValue by rememberSaveable { mutableStateOf("") }
-
     Column(modifier = modifier.padding(16.dp)) {
         options.forEach { item ->
             Row(

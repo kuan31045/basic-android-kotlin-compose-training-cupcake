@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cupcake.R
+import com.example.cupcake.Screen
 import com.example.cupcake.data.OrderUiState
 import com.example.cupcake.ui.components.FormattedPriceLabel
 
@@ -43,6 +44,7 @@ import com.example.cupcake.ui.components.FormattedPriceLabel
  */
 @Composable
 fun OrderSummaryScreen(
+
     orderUiState: OrderUiState,
     // TODO: add onCancelButtonClicked
     onCancelButtonClicked: () -> Unit,
@@ -50,6 +52,7 @@ fun OrderSummaryScreen(
     onSendButtonClicked: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     val resources = LocalContext.current.resources
 
     val numberOfCupcakes = resources.getQuantityString(
